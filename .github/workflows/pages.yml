@@ -1,0 +1,52 @@
+name: Survey and publish
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: "17 9 * * *" # nightly survey, 05:17 Eastern
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10 # the revision block on G-002 reads recent commits
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Survey GitHub
+        # PROFILE_TOKEN (optional, read-only) keeps private-repo activity current; without it
+        # those rows keep the values committed in data/github.json.
+        env:
+          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN || github.token }}
+        run: npm run data
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm test
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,49 @@
+{
+  "owner": "coletebou",
+  "disciplines": {
+    "A": "Agent systems",
+    "P": "Products",
+    "I": "Infrastructure",
+    "E": "Engineering",
+    "M": "Media"
+  },
+  "statuses": {
+    "live": "Live",
+    "operated": "Operated",
+    "beta": "Private beta",
+    "building": "Building",
+    "prototype": "Prototype",
+    "internal": "N.I.C.",
+    "complete": "Complete"
+  },
+  "sheets": [
+    { "mark": "A1", "title": "Badland Agent Platform", "discipline": "A", "status": "beta", "stack": ["imsg", "OpenClaw", "TypeScript"], "summary": "Personal agents that live in iMessage and SMS. Every tenant is isolated, with its own memory, tools and reminders.", "link": "https://agent.badland.ai", "since": "2026-02-03" },
+    { "mark": "A2", "title": "Drover", "discipline": "A", "status": "operated", "stack": ["JavaScript", "MCP", "tmux"], "summary": "Control plane for a fleet of Claude Code and Codex agents on four machines: a daemon, a web UI, an MCP server and native clients.", "repo": "drover" },
+    { "mark": "A3", "title": "ai-cli", "discipline": "A", "status": "operated", "stack": ["Rust", "Ratatui"], "summary": "Streams one prompt to several model providers at once and lays the answers side by side, so disagreement is visible.", "repo": "ai-cli", "link": "https://coletebou.com/projects/ai-cli" },
+    { "mark": "A4", "title": "ai-keys", "discipline": "A", "status": "prototype", "stack": ["Rust"], "summary": "One command line for inspecting and managing provider API keys across machines.", "repo": "ai-keys" },
+    { "mark": "A5", "title": "Lux", "discipline": "A", "status": "prototype", "stack": ["Raspberry Pi", "Realtime APIs"], "summary": "A voice agent on a Raspberry Pi. Local wake word, then full-duplex conversation through switchable real-time models.", "link": "https://coletebou.com/projects/voice-agent" },
+
+    { "mark": "P1", "title": "Badland Chat", "discipline": "P", "status": "live", "stack": ["React 19", "Express 5", "MongoDB", "tRPC"], "summary": "One chat surface for four frontier-model families, with voice, images, files, web research and council mode.", "repo": "Badland", "link": "https://badland.ai" },
+    { "mark": "P2", "title": "Tallgrass", "discipline": "P", "status": "building", "stack": ["TypeScript", "Swift"], "summary": "Discover, identify and share the natural world. Web, API and a native iOS app.", "repo": "tallgrass" },
+    { "mark": "P3", "title": "Tide", "discipline": "P", "status": "building", "stack": ["Swift"], "summary": "A code editor for iPad and iPhone in the spirit of VS Code, with SSH terminals, remote workspaces and AI help.", "repo": "tide" },
+    { "mark": "P4", "title": "Airspace Lab", "discipline": "P", "status": "live", "stack": ["Three.js"], "summary": "Orbit, slice and probe U.S. terminal airspace in 3D instead of memorizing a sectional.", "repo": "airspace-lab" },
+    { "mark": "P5", "title": "Altivolus", "discipline": "P", "status": "building", "stack": ["TypeScript"], "summary": "An aviation workbench: an interactive E6B flight computer, ground school, flight tracks, live ATC and weather.", "repo": "altivolus" },
+    { "mark": "P6", "title": "Setline", "discipline": "P", "status": "building", "stack": ["TypeScript", "Swift"], "summary": "Gym-aware workout planning and logging, with video form coaching.", "repo": "setline" },
+    { "mark": "P7", "title": "Halegraph", "discipline": "P", "status": "building", "stack": ["SwiftUI", "TypeScript"], "summary": "A private, long-running health atlas for people and their dogs.", "repo": "halegraph" },
+    { "mark": "P8", "title": "Undertone", "discipline": "P", "status": "building", "stack": ["JavaScript", "Web Audio"], "summary": "A live music studio and an editable sketchbook in one.", "repo": "undertone" },
+    { "mark": "P9", "title": "Sunny Dayz", "discipline": "P", "status": "live", "stack": ["Next.js", "Stripe", "MongoDB"], "summary": "A storefront with its own operations desk: product import, margin rules, generated ad copy and Stripe checkout.", "repo": "sunnydayz", "link": "https://sunnydayz.co" },
+    { "mark": "P10", "title": "Community Guru", "discipline": "P", "status": "live", "stack": ["React", "Typed services"], "summary": "An insurance statement-of-values workspace: structured submissions instead of spreadsheet archaeology.", "link": "https://app.badland.ai" },
+    { "mark": "P11", "title": "HOA Kit", "discipline": "P", "status": "live", "stack": ["Product", "Operations"], "summary": "Administration software for self-managed community associations, built with a partner.", "link": "https://hoa-kit.com" },
+    { "mark": "P12", "title": "MacroOS", "discipline": "P", "status": "live", "stack": ["React", "FRED API"], "summary": "A macroeconomics dashboard with FRED series and scenario analysis.", "link": "https://macroos.org" },
+    { "mark": "P13", "title": "starheart.ai", "discipline": "P", "status": "live", "stack": ["Static", "Cloudflare Pages"], "summary": "A Christian AI initiative: intelligence in service of the Creator.", "link": "https://starheart.ai" },
+
+    { "mark": "I1", "title": "imsg broker", "discipline": "I", "status": "operated", "stack": ["imsg", "Node.js"], "summary": "One iMessage number serving every tenant. Routes by compare-and-swap, journals delivery and fails closed on any ambiguous route.", "link": "https://coletebou.com/projects/agent-platform" },
+    { "mark": "I2", "title": "The fleet", "discipline": "I", "status": "operated", "stack": ["zsh", "tmux", "Tailscale"], "summary": "One environment and one shared memory across a Mac mini, a Hetzner server, a home PC and an agent host. Memory consolidates nightly at 03:00.", "repo": "dotfiles" },
+    { "mark": "I3", "title": "infra", "discipline": "I", "status": "operated", "stack": ["OpenTofu", "Cloudflare"], "summary": "Infrastructure as code for the whole personal estate: DNS, hosts, tunnels and access.", "repo": "infra" },
+
+    { "mark": "E1", "title": "Excalibur", "discipline": "E", "status": "internal", "stack": ["React", "FastAPI", "ACI 349"], "summary": "Turns finite-element shell forces into reviewable ACI 349 and ACI 318 reinforcement designs, with streamed progress.", "link": "https://coletebou.com/projects/excalibur" },
+    { "mark": "E2", "title": "Excito", "discipline": "E", "status": "prototype", "stack": ["Python", "Fortran"], "summary": "Puts legacy Fortran seismic-matching methods behind a portable Python command line.", "repo": "Excito" },
+
+    { "mark": "M1", "title": "NOT A NUMBER", "discipline": "M", "status": "complete", "stack": ["Python", "Blender"], "summary": "An original AI-culture music video, built on a Blender simulation pipeline.", "repo": "pdoom-music-video" }
+  ]
+}
