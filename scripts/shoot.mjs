@@ -13,11 +13,14 @@ const DIST = new URL("dist/", ROOT);
 const OUT = process.argv[2] || new URL("shots/", ROOT).pathname;
 const TYPES = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png" };
 
+// Serves dist/ to the local browser only: loopback bind, and nothing outside dist/ resolves.
 const server = createServer(async (req, res) => {
-  const path = decodeURIComponent(new URL(req.url, "http://x").pathname).replace(/\/$/, "/index.html").slice(1);
-  try { res.writeHead(200, { "content-type": TYPES[extname(path)] || "application/octet-stream" }).end(await readFile(new URL(path, DIST))); }
+  const rel = new URL(req.url, "http://x").pathname.replace(/\/$/, "/index.html").replace(/^\/+/, "");
+  const file = new URL(rel, DIST);
+  if (!file.pathname.startsWith(DIST.pathname)) return res.writeHead(404).end();
+  try { res.writeHead(200, { "content-type": TYPES[extname(file.pathname)] || "application/octet-stream" }).end(await readFile(file)); }
   catch { res.writeHead(404).end(); }
-}).listen(0);
+}).listen(0, "127.0.0.1");
 const url = `http://127.0.0.1:${server.address().port}/`;
 await mkdir(OUT, { recursive: true });
 

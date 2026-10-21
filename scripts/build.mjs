@@ -55,22 +55,28 @@ function revisions() {
       .trim().split("\n").filter(Boolean);
   } catch { /* not a git checkout */ }
   if (!lines.length) return `<tr><td>A</td><td>${shortDate(generated)}</td><td>Issued for construction</td></tr>`;
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const total = commitCount();
   return lines
     .map((l, i) => {
       const [hash, date, subject] = l.split("\t");
-      const rev = letters[(lines.length - 1 - i) % 26];
+      const rev = letterFor(total - i);
       return `<tr><td><span class="delta">${rev}</span></td><td>${esc(date)}</td><td>${esc(subject)} <code>${esc(hash)}</code></td></tr>`;
     })
     .join("");
 }
 
-function revLetter() {
+// Revision N is the Nth commit (A, B, ... Z, AA, AB ...). Needs full history: fetch-depth 0 in CI.
+function commitCount() {
   try {
-    const n = Number(execSync("git rev-list --count HEAD", { cwd: new URL(".", ROOT), encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim());
-    return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[(n - 1) % 26] || "A";
-  } catch { return "A"; }
+    return Number(execSync("git rev-list --count HEAD", { cwd: new URL(".", ROOT), encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim()) || 1;
+  } catch { return 1; }
 }
+function letterFor(n) {
+  let s = "";
+  for (let k = Math.max(1, n); k > 0; k = Math.floor((k - 1) / 26)) s = String.fromCharCode(65 + ((k - 1) % 26)) + s;
+  return s;
+}
+const revLetter = () => letterFor(commitCount());
 
 // ---------- schedule ----------
 function filters() {

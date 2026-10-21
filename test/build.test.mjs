@@ -14,9 +14,13 @@ before(async () => {
   gh = JSON.parse(await readFile(new URL("data/github.json", ROOT), "utf8"));
 });
 
-test("every template variable is filled", () => {
-  assert.doesNotMatch(html, /\{\{\w+\}\}/);
-  assert.doesNotMatch(html, /undefined|NaN/);
+test("every template variable is filled with a real value", async () => {
+  // Only the template's own placeholders and rendered values are checked, so ordinary text in
+  // commit subjects or PR titles ("handle undefined", "{{x}}") can never block a deploy.
+  const template = await readFile(new URL("src/index.html", ROOT), "utf8");
+  for (const [, name] of template.matchAll(/\{\{(\w+)\}\}/g)) assert.ok(!html.includes(`{{${name}}}`), name);
+  assert.doesNotMatch(html, /="(?:undefined|NaN|null)"|>(?:undefined|NaN|null)</);
+  assert.doesNotMatch(html, /\b(?:d|points|x|y|cx|cy|r)="[^"]*NaN/);
 });
 
 test("every schedule item is rendered with its mark", () => {

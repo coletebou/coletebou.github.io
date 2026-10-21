@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false # let a live Pages deployment finish; the next run queues behind it
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 10 # the revision block on G-002 reads recent commits
+          fetch-depth: 0 # revision letters count every commit; a shallow clone would cap them
       - uses: actions/setup-node@v4
         with:
           node-version: 22
