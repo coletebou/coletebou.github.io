@@ -110,7 +110,7 @@
       bctx.drawImage(tint, pad.l, pad.t, W - pad.l - pad.r, H - pad.t - pad.b);
 
       // survey grid: a line every four weeks, month labels, weekday labels
-      bctx.font = "500 9.5px 'IBM Plex Mono', monospace";
+      bctx.font = "500 9.5px 'B612 Mono', monospace";
       bctx.textBaseline = "middle";
       bctx.strokeStyle = hair; bctx.lineWidth = 1;
       var lastMonth = -1, lastLabel = -99, narrow = W < 600;
@@ -147,7 +147,7 @@
           var p = segs[Math.floor(segs.length * 0.37) & ~1];
           var label = String(Math.round(((L + 1) / (LEVELS + 1)) * 100));
           bctx.globalAlpha = 1;
-          bctx.font = "600 9px 'IBM Plex Mono', monospace"; bctx.textAlign = "center";
+          bctx.font = "600 9px 'B612 Mono', monospace"; bctx.textAlign = "center";
           var lx = fx(p[0]), ly = fy(p[1]);
           bctx.fillStyle = sheet; bctx.fillRect(lx - 9, ly - 6, 18, 12);
           bctx.fillStyle = ink; bctx.fillText(label, lx, ly + 0.5);
@@ -162,12 +162,12 @@
         bctx.strokeStyle = ink; bctx.lineWidth = 1.3;
         bctx.beginPath(); bctx.moveTo(px - 6, py); bctx.lineTo(px + 6, py); bctx.moveTo(px, py - 6); bctx.lineTo(px, py + 6); bctx.stroke();
         bctx.beginPath(); bctx.arc(px, py, 3.5, 0, Math.PI * 2); bctx.stroke();
-        bctx.font = "600 9.5px 'IBM Plex Mono', monospace"; bctx.textAlign = "left"; bctx.fillStyle = ink;
+        bctx.font = "600 9.5px 'B612 Mono', monospace"; bctx.textAlign = "left"; bctx.fillStyle = ink;
         if (!narrow) bctx.fillText("BM · SUMMIT EL. 100", Math.min(px + 9, W - 130), py - 9);
 
         // survey stakes, labels nudged upward until they stop colliding
         var placed = [];
-        bctx.font = "700 11px 'Big Shoulders Display', sans-serif";
+        bctx.font = "700 11px 'Barlow Condensed', sans-serif";
         stakes.forEach(function (st) {
           var x = wx(st.week), y = dayY(st.weekday);
           bctx.fillStyle = flag;
@@ -214,7 +214,11 @@
       var week = Math.round(((x - pad.l) / (W - pad.l - pad.r)) * weeks - 0.5);
       var day = Math.round(((y - pad.t) / (H - pad.t - pad.b)) * 7 - 0.5);
       week = Math.max(0, Math.min(weeks - 1, week)); day = Math.max(0, Math.min(6, day));
-      var k = Math.min(days.length - 1, week * 7 + day);
+      show(week * 7 + day);
+    }
+    // Read one day into the readout and mark it on the survey.
+    function show(k) {
+      k = Math.max(0, Math.min(days.length - 1, k));
       hover = { week: Math.floor(k / 7), day: k % 7 };
       var entry = days[k], count = entry[1];
       var fi = Math.round(((hover.week + 0.5) / weeks) * (NX - 1)), fj = Math.round(((hover.day + 0.5) / 7) * (NY - 1));
@@ -225,9 +229,25 @@
       if (readout) readout.textContent = text;
       blit();
     }
+    function leave() { hover = null; if (readout) readout.textContent = restText; blit(); }
     canvas.addEventListener("pointermove", pick);
     canvas.addEventListener("pointerdown", pick);
-    canvas.addEventListener("pointerleave", function () { hover = null; if (readout) readout.textContent = restText; blit(); });
+    canvas.addEventListener("pointerleave", leave);
+    // The same reading from the keyboard: the arrows walk a day (up, down) or a week (left, right), Home and End
+    // go to the first and the last day, Escape lets go. Focus starts on the latest day.
+    var STEP = { ArrowUp: -1, ArrowDown: 1, ArrowLeft: -7, ArrowRight: 7 };
+    canvas.addEventListener("keydown", function (ev) {
+      var k = hover ? hover.week * 7 + hover.day : days.length - 1;
+      if (Object.prototype.hasOwnProperty.call(STEP, ev.key)) k += hover ? STEP[ev.key] : 0;
+      else if (ev.key === "Home") k = 0;
+      else if (ev.key === "End") k = days.length - 1;
+      else if (ev.key === "Escape") { leave(); return; }
+      else return;
+      ev.preventDefault();
+      show(k);
+    });
+    canvas.addEventListener("focus", function () { if (!hover) show(days.length - 1); });
+    canvas.addEventListener("blur", leave);
 
     // One orchestrated moment: contours are surveyed in from the valley floor to the summit.
     function reveal() {

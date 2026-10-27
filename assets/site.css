@@ -1,5 +1,13 @@
 /* Layout: a bound drawing set. Each section is one sheet with a zoned border and a sheet tab;
-   drafting line weights (hairline, medium, heavy) carry the hierarchy instead of cards and shadows. */
+   drafting line weights (hairline, medium, heavy) carry the hierarchy instead of cards and shadows.
+   The set index: the cover sheet of coletebou.github.io, set in the plan set's own faces (Barlow
+   Condensed and B612, SIL OFL, served from this site), so no font service is asked for anything. */
+@font-face { font-family: "Barlow Condensed"; src: url("fonts/barlow-condensed-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url("fonts/barlow-condensed-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url("fonts/barlow-condensed-700.woff2") format("woff2"); font-weight: 700 900; font-display: swap; }
+@font-face { font-family: "B612"; src: url("fonts/b612-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "B612 Mono"; src: url("fonts/b612-mono-400.woff2") format("woff2"); font-weight: 400 500; font-display: swap; }
+@font-face { font-family: "B612 Mono"; src: url("fonts/b612-mono-700.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
 :root {
   --paper: #ecebe4;      /* drafting table */
   --sheet: #f7f6f0;      /* vellum */
@@ -10,12 +18,14 @@
   --grid: rgba(21, 33, 44, 0.055);
   --flag: #d5470c;       /* survey flagging tape */
   --flag-soft: rgba(213, 71, 12, 0.12);
+  --flag-fill: #b93c08;  /* flagging tape that carries text: 5.7:1 with --on-flag */
+  --on-flag: #fff;
   --sky: #2a5d8f;        /* sectional-chart blue for Class B */
   --sky-soft: rgba(42, 93, 143, 0.1);
   --shadow: 0 1px 0 rgba(21, 33, 44, 0.06), 0 18px 40px -28px rgba(21, 33, 44, 0.45);
-  --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
-  --body: "Hanken Grotesk", "Helvetica Neue", system-ui, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "B612", "Helvetica Neue", system-ui, sans-serif;
+  --mono: "B612 Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --gutter: max(16px, env(safe-area-inset-left, 0px));
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));
   color-scheme: light;
@@ -25,6 +35,7 @@
     --paper: #081a30; --sheet: #0c2747; --ink: #e4eef9; --ink-2: #9cb6d0;
     --line: rgba(228, 238, 249, 0.26); --hair: rgba(228, 238, 249, 0.12); --grid: rgba(228, 238, 249, 0.06);
     --flag: #ff9a52; --flag-soft: rgba(255, 154, 82, 0.14); --sky: #8cc4ff; --sky-soft: rgba(140, 196, 255, 0.12);
+    --flag-fill: #ff9a52; --on-flag: #0c2747;
     --shadow: 0 0 0 1px rgba(228, 238, 249, 0.06), 0 24px 50px -30px rgba(0, 0, 0, 0.8);
     color-scheme: dark;
   }
@@ -33,6 +44,7 @@
   --paper: #081a30; --sheet: #0c2747; --ink: #e4eef9; --ink-2: #9cb6d0;
   --line: rgba(228, 238, 249, 0.26); --hair: rgba(228, 238, 249, 0.12); --grid: rgba(228, 238, 249, 0.06);
   --flag: #ff9a52; --flag-soft: rgba(255, 154, 82, 0.14); --sky: #8cc4ff; --sky-soft: rgba(140, 196, 255, 0.12);
+  --flag-fill: #ff9a52; --on-flag: #0c2747;
   --shadow: 0 0 0 1px rgba(228, 238, 249, 0.06), 0 24px 50px -30px rgba(0, 0, 0, 0.8);
   color-scheme: dark;
 }
@@ -128,7 +140,7 @@ code { font: 500 0.82em var(--mono); color: var(--ink-2); }
 .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; font: 600 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: 1.5px solid var(--ink); color: var(--ink); transition: background 0.15s, color 0.15s; }
 .btn:hover { background: var(--ink); color: var(--sheet); }
 .btn-solid { background: var(--ink); color: var(--sheet); }
-.btn-solid:hover { background: var(--flag); border-color: var(--flag); color: #fff; }
+.btn-solid:hover { background: var(--flag-fill); border-color: var(--flag-fill); color: var(--on-flag); }
 
 .titleblock { position: relative; border: 2px solid var(--ink); background: var(--sheet); font-size: 14px; }
 .tb-row { padding: 9px 14px; border-bottom: 1px solid var(--line); min-width: 0; }
@@ -376,4 +388,21 @@ td.c-stack span { display: block; font: 400 11.5px/1.65 var(--mono); color: var(
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* The set index: the three editions, one row each. */
+.editions-t { width: 100%; }
+.editions-t th { padding: 0 10px 8px 0; font: 500 10px var(--mono); letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-2); text-align: start; }
+.editions-t td:nth-child(2) { font: 700 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.01em; }
+.editions-t td:nth-child(2) a { text-decoration: none; }
+.editions-t td:nth-child(2) a::after { content: " ↗"; font: 500 12px var(--mono); color: var(--ink-2); vertical-align: 3px; }
+.editions-t td:nth-child(3) { font: 400 12.5px var(--mono); white-space: nowrap; }
+.editions-t td:nth-child(4) { color: var(--ink-2); max-width: 52ch; }
+.s-ongoing { border-style: double; border-width: 3px; padding: 4px 7px 3px; }
+@media (max-width: 640px) {
+  .editions-t thead { display: none; }
+  .editions-t tr { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid var(--hair); }
+  .editions-t td { padding: 0; border: 0; }
+  .editions-t td:first-child { grid-row: span 3; }
+  .editions-t td:nth-child(3) { white-space: normal; }
 }
