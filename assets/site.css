@@ -390,7 +390,7 @@ td.c-stack span { display: block; font: 400 11.5px/1.65 var(--mono); color: var(
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 
-/* The set index: the three editions, one row each. */
+/* The set index: the four editions, one row each. */
 .editions-t { width: 100%; }
 .editions-t th { padding: 0 10px 8px 0; font: 500 10px var(--mono); letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-2); text-align: start; }
 .editions-t td:nth-child(2) { font: 700 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.01em; }
